@@ -5,12 +5,29 @@ from unittest.mock import Mock
 from langchain_core.language_models.fake_chat_models import GenericFakeChatModel
 from langchain_core.messages import AIMessage
 
-from agents import build_lead_agent, build_subagents
+from agents import RequestBudget, build_lead_agent, build_subagents
 from sandbox import DockerSandbox
 from tools import SOURCE_TOOLS, web_fetch
 
 
 class AgentTests(unittest.TestCase):
+    def test_shared_budget_runs_in_compiled_graph(self):
+        class ToolCallingFakeModel(GenericFakeChatModel):
+            def bind_tools(self, tools, **kwargs):
+                return self
+        runner = Mock(return_value=subprocess.CompletedProcess([], 0, stdout=b"", stderr=b""))
+        backend = DockerSandbox(runner=runner, name="budget-test")
+        model = ToolCallingFakeModel(messages=iter([AIMessage(content="Done")]))
+        budget = RequestBudget(1)
+        specs = build_subagents(budget)
+        self.assertIs(specs[0]['middleware'][-1], budget)
+        self.assertIs(specs[1]['middleware'][-1], budget)
+        agent = build_lead_agent(backend, model, budget)
+        agent.invoke({'messages': [{'role': 'user', 'content': 'hello'}]})
+        self.assertEqual(budget.used, 1)
+        with self.assertRaisesRegex(RuntimeError, 'Shared model request budget exhausted'):
+            agent.invoke({'messages': [{'role': 'user', 'content': 'again'}]})
+
     def test_subagents_have_independent_limits_and_correct_source_tools(self):
         first, second = build_subagents(), build_subagents()
         self.assertEqual(first[0]["name"], "researcher")

@@ -30,6 +30,7 @@ HF_SEARCH_URL = "https://huggingface.co/api/papers/search"
 EXA_URL = "https://mcp.exa.ai/mcp"
 _ARXIV_LOCK = threading.Lock()
 _LAST_ARXIV_CALL = None
+_ARXIV_UNAVAILABLE_UNTIL = 0.0
 
 
 class RetryableError(Exception):
@@ -88,7 +89,7 @@ def _request(method, url, **kwargs):
 
 def _error(exc):
     text = f"{type(exc).__name__}: {exc}"
-    for name in ("EXA_API_KEY", "LAB_API_KEY", "OPENAI_API_KEY"):
+    for name in ("EXA_API_KEY", "LAB_API_KEY", "OPENAI_API_KEY", "GOOGLE_API_KEY", "ANTHROPIC_API_KEY"):
         key = os.getenv(name, "")
         if key:
             text = text.replace(key, "[REDACTED]").replace(quote(key, safe=""), "[REDACTED]")
@@ -180,10 +181,13 @@ def _exa(name, arguments):
 def arxiv_search(query: str, max_results: int = 10) -> str:
     """Search arXiv papers by keywords, newest first. Returns a JSON list of {id, url, published, title, summary}."""
     try:
+        global _ARXIV_UNAVAILABLE_UNTIL
         terms = [term for term in re.findall(r"[^\W_]+(?:-[^\W_]+)*", query)
                  if term.lower() not in {"and", "or", "not", "all", "ti", "au", "abs"}]
         if not terms:
             return "NO RESULTS"
+        if time.monotonic() < _ARXIV_UNAVAILABLE_UNTIL:
+            return "ERROR: arXiv temporarily unavailable after retries; use another source"
         def call():
             global _LAST_ARXIV_CALL
             with _ARXIV_LOCK:
@@ -195,7 +199,11 @@ def arxiv_search(query: str, max_results: int = 10) -> str:
                     "search_query": " AND ".join(f"all:{term}" for term in terms),
                     "sortBy": "submittedDate", "sortOrder": "descending",
                     "max_results": max(1, min(30, max_results)), "start": 0})
-        response = with_retry(call, attempts=8, base=3, cap=60)
+        try:
+            response = with_retry(call, attempts=5, base=3, cap=60)
+        except RetryableError:
+            _ARXIV_UNAVAILABLE_UNTIL = time.monotonic() + 600
+            raise
         root = xml.etree.ElementTree.fromstring(response.text)
         ns = {"a": "http://www.w3.org/2005/Atom"}
         records = []

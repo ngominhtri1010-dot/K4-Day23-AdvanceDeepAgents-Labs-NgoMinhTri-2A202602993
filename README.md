@@ -59,7 +59,8 @@ Lab/
 └── reports/                  báo cáo sinh ra (bạn commit vào repo nộp)
 ```
 
-Mỗi tệp "SINH VIÊN CÀI ĐẶT" là **pseudo-code chạy được** (import được): các hàm có docstring mô tả việc cần làm, các `TODO n` đánh số theo `GUIDE.md`, thân hàm đang `raise NotImplementedError`.
+Bộ khung ban đầu đánh dấu `TODO n` theo `GUIDE.md`. Bản này đã hoàn thiện
+`tools.py`, `agents.py`, `research.py` và `check_citations.py`; các test nằm trong `tests/`.
 
 ## 4. Cài đặt
 
@@ -91,6 +92,100 @@ python research.py "survey about world model"
 ```
 
 Kết quả nằm ở `reports/survey-about-world-model.md` cùng `.sources.json` và `.meta.json`.
+
+### Kiểm tra bản cài đặt
+
+Bốn tệp sinh viên đã được cài đặt. Chạy các test offline (không gọi API, không tốn token):
+
+```bash
+source .venv/bin/activate
+python -m unittest discover -s tests -v
+```
+
+Thử công cụ thật bằng `python tools.py`. arXiv có thể trả HTTP 429 và cần chờ retry.
+Chạy một chủ đề bằng lệnh bên trên trước khi chạy đủ năm chủ đề. Script kiểm tra
+trích dẫn trong sandbox trước khi tải về; chỉ lưu kết quả hợp lệ, có ít nhất ba
+nhãn nguồn và ba lần giao việc. Báo cáo và JSON nguồn giữ nguyên byte tải từ sandbox.
+
+Với OpenRouter và Docker, điền cấu hình sau trong `.env` bằng key của bạn:
+
+```dotenv
+LAB_BASE_URL=https://openrouter.ai/api/v1
+LAB_MODEL=openai/gpt-4o-mini
+LAB_API_KEY=<your-openrouter-key>
+SANDBOX=docker
+SANDBOX_IMAGE=python:3.12-slim
+EXA_API_KEY=<your-exa-key>
+# Tùy chọn: giới hạn đầu ra mỗi lần gọi model; model trả phí mặc định 2048.
+LAB_MAX_TOKENS=2048
+```
+
+Không cần `DAYTONA_API_KEY` khi dùng Docker. Nếu OpenRouter trả 402, kiểm tra credit
+và hạn mức của key; hạn mức đầu ra thấp hơn không thay thế credit cho toàn bộ lượt
+nghiên cứu. `meta.json` chỉ đếm token của lead, không bao gồm token subagent.
+
+Để dùng Gemini trực tiếp, bỏ/comment `LAB_BASE_URL` và `LAB_API_KEY`, rồi đặt
+`LAB_MODEL=google_genai:gemini-3.8-flash` và `GOOGLE_API_KEY` trong `.env`.
+Thư viện Google đã có trong `requirements.txt`. Chọn model có sẵn cho key của bạn.
+
+### Tiết kiệm quota và tiếp tục khi chạy lỗi
+
+Ngân sách mặc định là **36 lượt gọi model chung cho lead và tất cả subagent trong
+mỗi lần chạy**, không phải 36 cho mỗi agent. Có thể đặt `LAB_REQUEST_BUDGET` trong
+`.env` hoặc dùng `--request-budget`. Giới hạn này không biết quota tài khoản còn
+bao nhiêu và không bảo đảm đủ để hoàn thành báo cáo. Ví dụ chạy với trần 30 lượt:
+
+```bash
+python research.py "survey about world model" --request-budget 30
+```
+
+Chương trình lưu ghi chú, bản nháp báo cáo/nguồn và thống kê tiến độ vào
+`.research-progress/` sau các bước của lead và các lần ghi tệp. Nếu hết quota,
+lỗi API hoặc bị Ctrl+C, nó cố tải tiến độ về **trước khi sandbox bị xóa**.
+Thư mục này được gitignore và không phải báo cáo nộp bài. Một lỗi lưu tiến độ sẽ
+được báo rõ; chỉ dữ liệu đã ghi được trong sandbox mới có thể phục hồi.
+
+Khi quota khả dụng, chạy **cùng chủ đề** để tự nạp tiến độ vào sandbox mới:
+
+```bash
+python research.py "survey about world model"
+```
+
+Lead kiểm tra và dùng lại ghi chú đủ bằng chứng, chỉ giao phần còn thiếu. Đây là
+tiếp tục từ các tệp nghiên cứu, không phải khôi phục nguyên trạng hội thoại/graph;
+agent vẫn cần vài lượt để đọc và đánh giá tiến độ. Các ghi chú cũ phải được kiểm
+tra vì có thể dở dang. Thống kê lead và số request trong metadata cộng các lần
+chạy, không tạo số lượt giả để đạt rubric. Báo cáo chỉ được lưu vào `reports/`
+sau khi hoàn thiện và kiểm tra trong sandbox mới; checkpoint được xóa khi thành công.
+
+Muốn bỏ qua tiến độ cũ và nghiên cứu lại, dùng `--fresh`:
+
+```bash
+python research.py "survey about world model" --fresh
+```
+
+Prompt ưu tiên đúng 3 nhánh ban đầu, mỗi nhánh khoảng 3-4 nguồn, tìm/đọc theo batch,
+tránh fetch lặp, và gộp finalizer + validator trong một lệnh. Client không tự retry
+lỗi LLM; công cụ dữ liệu vẫn retry lỗi tạm thời. Với OpenRouter Free, cấu hình:
+
+```dotenv
+LAB_BASE_URL=https://openrouter.ai/api/v1
+LAB_MODEL=openrouter/free
+LAB_API_KEY=<your-openrouter-key>
+LAB_REQUEST_BUDGET=36
+# Mặc định free model là 4096 để giảm nguy cơ cắt mất nội dung ghi chú.
+LAB_MAX_TOKENS=4096
+```
+
+Các ghi chú của những lần chạy trước khi tính năng lưu tiến độ được cài đặt
+không thể phục hồi nếu sandbox đã bị xóa.
+
+Kiểm tra báo cáo đã tạo:
+
+```bash
+python check_citations.py reports/survey-about-world-model.md reports/survey-about-world-model.sources.json
+python self_check.py
+```
 
 ## 6. Chủ đề và nộp bài
 

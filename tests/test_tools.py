@@ -12,6 +12,17 @@ def response(text="", status=200, headers=None):
 
 
 class ToolTests(unittest.TestCase):
+    def test_arxiv_cooldown_skips_network_after_exhausted_retries(self):
+        with patch.object(tools, "_ARXIV_UNAVAILABLE_UNTIL", 0), \
+                patch.object(tools, "_LAST_ARXIV_CALL", None), \
+                patch("tools.time.monotonic", return_value=100), \
+                patch("tools.time.sleep"), \
+                patch("tools._request", side_effect=tools.RetryableError("HTTP 429")) as request:
+            self.assertTrue(tools.arxiv_search.invoke({"query": "world"}).startswith("ERROR:"))
+            self.assertEqual(request.call_count, 5)
+            self.assertTrue(tools.arxiv_search.invoke({"query": "different query"}).startswith("ERROR:"))
+            self.assertEqual(request.call_count, 5)
+
     def test_retry_backoff_jitter_cap_and_no_final_sleep(self):
         call = Mock(side_effect=tools.RetryableError("busy"))
         with patch("tools.time.sleep") as sleep, patch("tools.random.uniform", return_value=0.5):

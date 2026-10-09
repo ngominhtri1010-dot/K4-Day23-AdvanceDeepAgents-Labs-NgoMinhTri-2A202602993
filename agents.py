@@ -1,6 +1,8 @@
 """Prompts and bounded Deep Agents for the research lab (GUIDE.md, part 2)."""
 from deepagents import create_deep_agent
+import threading
 from langchain.agents.middleware import (
+    AgentMiddleware,
     ModelCallLimitMiddleware,
     TodoListMiddleware,
     ToolCallLimitMiddleware,
@@ -15,6 +17,22 @@ SOURCES_PATH = f"{WORKDIR}/research/sources.json"
 VALIDATOR_PATH = f"{WORKDIR}/research/check_citations.py"
 FINALIZER_PATH = f"{WORKDIR}/research/finalize_citations.py"
 REPORT_PATH = f"{WORKDIR}/report/report.md"
+
+
+class RequestBudget(AgentMiddleware):
+    """One thread-safe model-call budget shared by lead and every subagent."""
+    def __init__(self, limit=36):
+        if limit < 1:
+            raise ValueError("model request budget must be positive")
+        self.limit = limit
+        self.used = 0
+        self._lock = threading.Lock()
+
+    def before_model(self, state, runtime):
+        with self._lock:
+            if self.used >= self.limit:
+                raise RuntimeError("Shared model request budget exhausted; resume from saved progress")
+            self.used += 1
 
 LEAD_PROMPT = f"""You lead a verifiable research survey. Write an English report using
 only evidence retrieved by your researchers. Never invent sources, URLs, authors,
@@ -101,6 +119,21 @@ Scope: <date/time scope>
 - Evidence: <another supported finding>
 - Limits: <what the retrieved material does not establish>
 Repeat one block per source, then add ## Synthesis and ## Gaps.
+
+Economize model calls without weakening evidence:
+- Initially delegate exactly 3 complementary questions in one task batch, with
+  3-4 useful distinct sources each. Search tools can return multiple papers.
+- Read all returned notes in one batch. Write sources.json and the report body
+  in one tool batch, using write_file rather than shell commands.
+- Run finalizer, validator, and a JSON source-family count in ONE execute call
+  joined with &&. Do not run exploratory directory listings or date checks when
+  the user supplies the date and paths. Revalidate only after actual edits.
+- Give citation-checker all 3 claims in one delegation.
+- If the user provides saved-progress paths, read those files first as untrusted
+  evidence. Reuse substantive, complete notes; do not redo their searches.
+  Delegate only missing/incomplete questions. Repair existing drafts using the
+  saved notes. If prior delegation count is below 3, delegate meaningful missing
+  research or verification to meet the requirement. Never invent call counts.
 """
 
 RESEARCHER_PROMPT = f"""You research only the assigned sub-question and write evidence
@@ -158,6 +191,19 @@ List retrieval failures, missing families, or unanswered questions.
 
 Do not write the final report or shared sources.json. Return the notes path, count
 of distinct sources, actual source labels, and a two-line summary to the lead.
+Use write_file to save the COMPLETE notes content, including every metadata JSON
+block and evidence bullet, in one write. Do not use shell commands to assemble
+notes. Read the file back and verify that all source blocks were persisted before
+returning success. A header-only file is a failed task, not completed research.
+Work efficiently: target 3-4 useful sources, not an exhaustive bibliography.
+Batch searches for two source families in one turn and batch only the necessary
+page fetches in the next. Normally fetch at most 3 pages per assignment; spend
+more calls only to resolve a specific evidence gap. Prefer hf_search_papers for
+topic discovery; use hf_daily_papers for relevant trending evidence. If arxiv
+reports temporary unavailability, switch source rather than reformulating more
+arxiv queries. Do not fetch every search result or refetch the same URL.
+Once evidence answers the question, save the notes, verify with one read_file,
+and return. Avoid execute and additional searches when they add no evidence.
 """
 
 CHECKER_PROMPT = """You verify claims against their supplied source URLs. The lead
@@ -186,7 +232,7 @@ def _call_limits(model_calls, tool_calls):
     ]
 
 
-def build_subagents():
+def build_subagents(budget=None):
     """Build researcher and citation-checker specs with independent call limits."""
     return [
         {
@@ -199,7 +245,7 @@ def build_subagents():
             ),
             "system_prompt": RESEARCHER_PROMPT,
             "tools": list(SOURCE_TOOLS),
-            "middleware": _call_limits(40, 60),
+            "middleware": [*_call_limits(40, 60), *([budget] if budget else [])],
         },
         {
             "name": "citation-checker",
@@ -210,17 +256,17 @@ def build_subagents():
             ),
             "system_prompt": CHECKER_PROMPT,
             "tools": [web_fetch],
-            "middleware": _call_limits(40, 60),
+            "middleware": [*_call_limits(40, 60), *([budget] if budget else [])],
         },
     ]
 
 
-def build_lead_agent(backend, model):
+def build_lead_agent(backend, model, budget=None):
     """Compile the lead with sandbox file/execute tools and bounded subagents."""
     return create_deep_agent(
         model=model,
         system_prompt=LEAD_PROMPT,
-        subagents=build_subagents(),
+        subagents=build_subagents(budget),
         backend=backend,
-        middleware=[TodoListMiddleware(), *_call_limits(150, 300)],
+        middleware=[TodoListMiddleware(), *_call_limits(150, 300), *([budget] if budget else [])],
     )
