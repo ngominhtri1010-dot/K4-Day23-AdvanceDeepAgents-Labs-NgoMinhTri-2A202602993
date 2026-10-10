@@ -1,0 +1,146 @@
+[
+  {
+    "n": 1,
+    "id": "2609.40360",
+    "url": "https://arxiv.org/abs/2609.40360",
+    "title": "Semifactual Credit-Augmented Policy Optimization",
+    "date": "2026-09-30",
+    "source": "arxiv"
+  },
+  {
+    "n": 2,
+    "id": "2311.13095",
+    "url": "https://huggingface.co/papers/2311.13095",
+    "title": "Enhancing Logical Reasoning in Large Language Models to Facilitate Legal Applications",
+    "date": "2023-11-22",
+    "source": "hf-search"
+  },
+  {
+    "n": 3,
+    "id": "",
+    "url": "https://arxiv.org/abs/2502.14768",
+    "title": "Logic-RL: Unleashing LLM Reasoning with Rule-Based Reinforcement Learning",
+    "date": "2025-02-20",
+    "source": "web"
+  },
+  {
+    "n": 4,
+    "id": "",
+    "url": "https://openai.com/index/instruction-following/",
+    "title": "Aligning language models to follow instructions",
+    "date": "2022-01-27",
+    "source": "web"
+  },
+  {
+    "n": 5,
+    "id": "",
+    "url": "https://proceedings.mlr.press/v235/xi24a.html",
+    "title": "Training Large Language Models for Reasoning through Reverse Curriculum Reinforcement Learning",
+    "date": "2024-07-08",
+    "source": "web"
+  },
+  {
+    "n": 6,
+    "id": "2503.16219",
+    "url": "https://huggingface.co/papers/2503.16219",
+    "title": "Reinforcement Learning for Reasoning in Small LLMs: What Works and What Doesn't",
+    "date": "2025-03-20",
+    "source": "hf-search"
+  },
+  {
+    "n": 7,
+    "id": "",
+    "url": "https://magazine.sebastianraschka.com/p/the-state-of-llm-reasoning-model-training",
+    "title": "The State of Reinforcement Learning for LLM Reasoning",
+    "date": "2025-04-19",
+    "source": "web"
+  },
+  {
+    "n": 8,
+    "id": "2504.20834",
+    "url": "https://huggingface.co/papers/2504.20834",
+    "title": "Reinforcement Learning for LLM Reasoning Under Memory Constraints",
+    "date": "2025-04-29",
+    "source": "hf-search"
+  },
+  {
+    "n": 9,
+    "id": "2505.17652",
+    "url": "https://huggingface.co/papers/2505.17652",
+    "title": "Rethinking the Sampling Criteria in Reinforcement Learning for LLM Reasoning: A Competence-Difficulty Alignment Perspective",
+    "date": "2025-05-23",
+    "source": "hf-search"
+  },
+  {
+    "n": 10,
+    "id": "2506.02177",
+    "url": "https://huggingface.co/papers/2506.02177",
+    "title": "Act Only When It Pays: Efficient Reinforcement Learning for LLM Reasoning via Selective Rollouts",
+    "date": "2025-06-02",
+    "source": "hf-search"
+  },
+  {
+    "n": 11,
+    "id": "2506.14965",
+    "url": "https://huggingface.co/papers/2506.14965",
+    "title": "Revisiting Reinforcement Learning for LLM Reasoning from A Cross-Domain Perspective",
+    "date": "2025-06-17",
+    "source": "hf-search"
+  },
+  {
+    "n": 12,
+    "id": "2602.05281",
+    "url": "https://huggingface.co/papers/2602.05281",
+    "title": "Back to Basics: Revisiting Exploration in Reinforcement Learning for LLM Reasoning via Generative Probabilities",
+    "date": "2026-02-05",
+    "source": "hf-search"
+  },
+  {
+    "n": 13,
+    "id": "2610.02039",
+    "url": "https://arxiv.org/abs/2610.02039",
+    "title": "CARM: Cancellation-Aware Response Masking for LLM Reinforcement Learning",
+    "date": "2026-10-01",
+    "source": "arxiv"
+  },
+  {
+    "n": 14,
+    "id": "2610.07767",
+    "url": "https://arxiv.org/abs/2610.07767",
+    "title": "TRACE: Rollout-Guided Quantization-Aware Training for FP4 Reinforcement Learning of MoE Language Models",
+    "date": "2026-10-06",
+    "source": "arxiv"
+  },
+  {
+    "n": 15,
+    "id": "",
+    "url": "https://proceedings.iclr.cc/paper_files/paper/2026/file/517f9b9c227b9dd51dba4560f37165ed-Paper-Conference.pdf",
+    "title": "REINFORCEMENT LEARNING WITH VERIFIABLE RE WARDS IMPLICITLY INCENTIVIZES CORRECT REA SONING IN BASE LLMS",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 16,
+    "id": "",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2025/file/537d5aa768c2d534016a4d06f87bc8fb-Paper-Conference.pdf",
+    "title": "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 17,
+    "id": "2508.08221",
+    "url": "https://huggingface.co/papers/2508.08221",
+    "title": "Part I: Tricks or Traps? A Deep Dive into RL for LLM Reasoning",
+    "date": "2025-08-11",
+    "source": "hf-search"
+  },
+  {
+    "n": 18,
+    "id": "2507.21645",
+    "url": "https://huggingface.co/papers/2507.21645",
+    "title": "Libra: Assessing and Improving Reward Model by Learning to Think",
+    "date": "2025-07-29",
+    "source": "hf-search"
+  }
+]

@@ -158,6 +158,11 @@ tra vì có thể dở dang. Thống kê lead và số request trong metadata c�
 chạy, không tạo số lượt giả để đạt rubric. Báo cáo chỉ được lưu vào `reports/`
 sau khi hoàn thiện và kiểm tra trong sandbox mới; checkpoint được xóa khi thành công.
 
+Chế độ tiếp tục đưa nội dung tệp đã lưu trực tiếp vào tin nhắn của lead (tối đa
+40.000 ký tự, ưu tiên ghi chú); tệp bị cắt được đánh dấu rõ. Prompt tiếp tục bỏ qua
+giai đoạn chia lại ba câu hỏi và không dò thư mục/đọc lại tệp đã được cung cấp đủ.
+Đây là hướng dẫn cho model, không bảo đảm mọi model miễn phí sẽ tuân thủ hoàn toàn.
+
 Muốn bỏ qua tiến độ cũ và nghiên cứu lại, dùng `--fresh`:
 
 ```bash
@@ -202,3 +207,61 @@ python self_check.py
 - Mỗi lần chạy tốn token LLM và thời gian sandbox. `tokens` trong `meta.json` chỉ đếm tin nhắn của lead, chưa gồm subagent, nên chi phí thật cao hơn. `open_sandbox()` luôn dừng và xóa sandbox khi kết thúc, kể cả khi lỗi. Đừng bỏ qua nó.
 - **Không đưa bí mật vào sandbox.** Sandbox không ngăn được prompt injection hay việc đẩy dữ liệu ra mạng; một trang web độc hại có thể khiến agent chạy lệnh bên trong sandbox. Vì vậy mọi công cụ gọi mạng và mọi khóa ở lại phía host.
 - Nội dung lấy từ web là **dữ liệu không đáng tin**: agent không được làm theo chỉ dẫn nằm trong đó.
+
+### Ollama local
+
+Sau khi cài Ollama, chạy `ollama pull qwen3:8b` rồi
+`ollama create lab-qwen3 -f Ollama.Modelfile`. Cấu hình này dùng lại trọng số
+đã tải và đặt ngữ cảnh 16K; cần đủ RAM cho model và Docker.
+
+```dotenv
+LAB_BASE_URL=http://localhost:11434/v1
+LAB_MODEL=lab-qwen3
+LAB_API_KEY=ollama
+LAB_MAX_TOKENS=4096
+LAB_REASONING_EFFORT=none
+LAB_TIMEOUT=600
+LAB_RESUME_EVIDENCE_CHARS=12000
+SANDBOX=docker
+SANDBOX_IMAGE=python:3.12-slim
+```
+
+`LAB_REASONING_EFFORT` được gửi khi chat model hỗ trợ trường này;
+`LAB_TIMEOUT` đặt thời gian chờ HTTP. Giữ Exa key để tìm tài liệu online.
+Ollama local không chịu quota LLM của OpenRouter, nhưng các công cụ online
+vẫn có hạn mức riêng. Luôn kiểm tra kết quả và citations trước khi nộp.
+
+### Quy trình chia nhỏ cho model local
+
+Bộ kết quả hiện được giữ trong `reports/` gồm đúng năm báo cáo do Ollama
+`lab-qwen3` sinh bằng chế độ `guided`: Python điều phối các bước, LLM nghiên cứu
+và viết nội dung. Cả năm metadata ghi `execution_mode=guided`; đây không phải
+kết quả của quy trình model tự điều phối toàn bộ. Các kết quả thử nghiệm agent
+tự điều phối và bản nháp/checkpoint cũ đã được xóa để tránh nhầm lẫn.
+
+Chạy bằng `--guided` khi model nhỏ gặp khó với vòng lặp tự do. Có thể đặt
+`LAB_WORKFLOW=guided` trong `.env` để CLI dùng chế độ này mặc định:
+
+```bash
+.venv/bin/python research.py --guided "survey about world model"
+```
+
+Lead dùng model để lập ba câu hỏi; coordinator gọi công cụ `task` thật để chạy
+ba researcher song song. Mỗi researcher gọi nguồn dữ liệu, lưu kết quả thật và
+phân tích ngắn vào sandbox. Catalog được tạo từ chính dữ liệu công cụ; model
+không được tự viết ID, URL, tiêu đề hoặc nhãn nguồn. Bộ lọc loại nguồn lệch chủ đề;
+phải có ba nhãn nguồn cùng tài liệu nền tảng và gần đây trước khi tổng hợp.
+
+Lead viết từng phần với catalog ngắn. Công cụ ghi phần chặn citation không thuộc
+catalog của phần đó. `execute` chạy finalizer và validator trong sandbox; một
+citation-checker thực sự tải ba trang nguồn, kiểm tra các câu TL;DR và chọn trích
+đoạn đối chiếu từ các đoạn có sẵn trên trang. Chương trình gắn lại nguyên văn đoạn
+đã chọn, tránh việc model diễn đạt lại câu trích. Kết quả `SUPPORTED` chỉ được chấp nhận nếu trích đoạn tồn tại
+nguyên văn trong trang đã tải. Kiểm tra mẫu này không thay thế việc rà soát toàn
+bộ nội dung khi nộp bài.
+
+Checkpoint của chế độ này nằm trong `.research-progress/guided/`; chạy lại cùng
+lệnh để tiếp tục các phần còn thiếu. Dùng `--fresh` để nghiên cứu lại. Metadata
+nêu rõ `execution_mode=guided`, điều khiển các bước bằng mã, số task thật, số lượt
+model thực tế và kết quả kiểm tra mẫu. File báo cáo và sources chỉ được tải về
+sau khi xử lý và kiểm tra trong sandbox; không sửa nội dung các file nộp trên host.

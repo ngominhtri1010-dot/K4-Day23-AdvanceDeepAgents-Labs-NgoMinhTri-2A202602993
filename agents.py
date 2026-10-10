@@ -223,6 +223,23 @@ a failed fetch. Return a suggested correction where appropriate; the lead edits
 and reruns finalization/validation. Do not declare UNVERIFIABLE claims verified.
 """
 
+RESUME_GUIDANCE = """
+RESUME MODE: the user provides real saved research and prior task-call counts.
+This overrides the initial discovery/delegation stages of the workflow above.
+Do not create a new three-question research batch merely because this is a new
+conversation. Count the supplied prior delegations toward the three-task minimum.
+Use the evidence text embedded in the user message immediately; do not call ls,
+glob, or read_file for files whose complete contents are already embedded.
+Inspect evidence for missing URLs, provenance, and unsupported claims. Omit weak
+claims; retrieve only metadata/evidence needed for a specific gap. Delegate one
+bounded missing question only if needed. Do not repeat searches for known papers.
+If the evidence is sufficient, update todos and write sources.json and report.md
+in one parallel tool batch. Then finalize/validate in one execute call, delegate
+the three-claim spot-check, and fix actual issues. A shorter accurate survey with
+3 thematic sections is preferable to restarting an exhaustive survey. Keep all
+required headings, at least 3 real source labels, and the citation verification.
+"""
+
 
 def _call_limits(model_calls, tool_calls):
     """New middleware instances keep each agent's counters independent."""
@@ -261,11 +278,11 @@ def build_subagents(budget=None):
     ]
 
 
-def build_lead_agent(backend, model, budget=None):
+def build_lead_agent(backend, model, budget=None, *, resume=False):
     """Compile the lead with sandbox file/execute tools and bounded subagents."""
     return create_deep_agent(
         model=model,
-        system_prompt=LEAD_PROMPT,
+        system_prompt=LEAD_PROMPT + (RESUME_GUIDANCE if resume else ""),
         subagents=build_subagents(budget),
         backend=backend,
         middleware=[TodoListMiddleware(), *_call_limits(150, 300), *([budget] if budget else [])],

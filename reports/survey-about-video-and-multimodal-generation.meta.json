@@ -1,0 +1,71 @@
+{
+  "topic": "survey about video and multimodal generation",
+  "model": "lab-qwen3",
+  "elapsed_s": 451.2,
+  "subagent_calls": 7,
+  "tool_calls": {
+    "task": 7,
+    "write_report_section": 11,
+    "plan_research": 1,
+    "write_todos": 1,
+    "prepare_sources": 1,
+    "execute": 4
+  },
+  "tokens": {
+    "input": 16235,
+    "output": 1661
+  },
+  "model_requests_attempted": 19,
+  "n_sources": 14,
+  "source_families": [
+    "arxiv",
+    "hf-search",
+    "web"
+  ],
+  "execution_mode": "guided",
+  "phase_control": "deterministic; model plans, analyses, writes and checks",
+  "recorded_agent_tokens": {
+    "input": 35001,
+    "output": 4478
+  },
+  "executed_tool_calls": {
+    "plan_research": 1,
+    "write_todos": 1,
+    "task": 7,
+    "hf_search_papers": 3,
+    "arxiv_search": 6,
+    "web_search": 3,
+    "web_fetch": 15,
+    "prepare_sources": 1,
+    "write_report_section": 11,
+    "execute": 4
+  },
+  "citation_audit": {
+    "checks": [
+      {
+        "n": 1,
+        "status": "SUPPORTED",
+        "quote_id": 10,
+        "reason": "The claim is directly supported by the quote in the abstract, which states that modern video generators can realize increasingly complex visual narratives, positioning the prompt enhancer as a critical bridge between user instructions and cinematic plans.",
+        "evidence": "Modern video generators can realize increasingly complex visual narratives, positioning the prompt enhancer (PE) as a critical bridge from concise user instructions and multimodal references to structured cinematic plans.",
+        "url": "https://arxiv.org/abs/2610.11736"
+      },
+      {
+        "n": 2,
+        "status": "SUPPORTED",
+        "quote_id": 9,
+        "reason": "The claim is directly supported by the quote in the abstract, which explicitly states that VideoGPT uses VQ-VAE with 3D convolutions and axial self-attention to generate high-fidelity video samples using a GPT-like autoregressive model.",
+        "evidence": "VideoGPT uses VQ-VAE with 3D convolutions and axial self-attention to generate high-fidelity video samples using a GPT-like autoregressive model.",
+        "url": "https://huggingface.co/papers/2104.10157"
+      },
+      {
+        "n": 3,
+        "status": "SUPPORTED",
+        "quote_id": 17,
+        "reason": "The claim is directly supported by the quote in the README, which states that VideoGPT is an architecture for scaling likelihood-based generative modeling to natural videos, using discrete latent representations and spatio-temporal position encodings.",
+        "evidence": "We present VideoGPT: a conceptually simple architecture for scaling likelihood based generative modeling to natural videos.",
+        "url": "https://github.com/wilson1yan/videogpt"
+      }
+    ]
+  }
+}

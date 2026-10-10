@@ -1,0 +1,114 @@
+[
+  {
+    "n": 1,
+    "id": "2610.11736",
+    "url": "https://arxiv.org/abs/2610.11736",
+    "title": "Towards Unified Evaluation of Prompt Enhancers for Video Generation",
+    "date": "2026-10-08",
+    "source": "arxiv"
+  },
+  {
+    "n": 2,
+    "id": "2104.10157",
+    "url": "https://huggingface.co/papers/2104.10157",
+    "title": "VideoGPT: Video Generation using VQ-VAE and Transformers",
+    "date": "2021-04-20",
+    "source": "hf-search"
+  },
+  {
+    "n": 3,
+    "id": "",
+    "url": "https://github.com/wilson1yan/videogpt",
+    "title": "wilson1yan/VideoGPT",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 4,
+    "id": "2312.04086",
+    "url": "https://huggingface.co/papers/2312.04086",
+    "title": "MTVG : Multi-text Video Generation with Text-to-Video Models",
+    "date": "2023-12-07",
+    "source": "hf-search"
+  },
+  {
+    "n": 5,
+    "id": "2401.07781",
+    "url": "https://huggingface.co/papers/2401.07781",
+    "title": "Towards A Better Metric for Text-to-Video Generation",
+    "date": "2024-01-15",
+    "source": "hf-search"
+  },
+  {
+    "n": 6,
+    "id": "2403.09669",
+    "url": "https://huggingface.co/papers/2403.09669",
+    "title": "STREAM: Spatio-TempoRal Evaluation and Analysis Metric for Video Generative Models",
+    "date": "2024-01-30",
+    "source": "hf-search"
+  },
+  {
+    "n": 7,
+    "id": "2605.03475",
+    "url": "https://huggingface.co/papers/2605.03475",
+    "title": "WorldJen: An End-to-End Multi-Dimensional Benchmark for Generative Video Models",
+    "date": "2026-05-05",
+    "source": "hf-search"
+  },
+  {
+    "n": 8,
+    "id": "",
+    "url": "https://sites.research.google/videopoet/",
+    "title": "VideoPoet – Google Research",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 9,
+    "id": "2401.09084",
+    "url": "https://huggingface.co/papers/2401.09084",
+    "title": "UniVG: Towards UNIfied-modal Video Generation",
+    "date": "2024-01-17",
+    "source": "hf-search"
+  },
+  {
+    "n": 10,
+    "id": "",
+    "url": "https://arxiv.org/abs/2609.15863",
+    "title": "[2609.15863] LynnReal-Omni: Native multi-modal Video Generation for Agentic Visual Workflows",
+    "date": "2026-09-14",
+    "source": "web"
+  },
+  {
+    "n": 11,
+    "id": "",
+    "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Han_TV2TV_A_Unified_Framework_for_Interleaved_Language_and_Video_Generation_CVPR_2026_paper.pdf",
+    "title": "TV2TV: A Unified Framework for Interleaved Language and Video Generation",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 12,
+    "id": "",
+    "url": "https://openaccess.thecvf.com/content/CVPR2026/papers/Huang_UnityVideo_Unified_Multi-Modal_Multi-Task_Learning_for_Enhancing_World-Aware_Video_Generation_CVPR_2026_paper.pdf",
+    "title": "UnityVideo: Unified Multi-Modal Multi-Task Learning for Enhancing World-Aware Video Generation",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 13,
+    "id": "",
+    "url": "https://arxiv.org/html/2403.09669v3",
+    "title": "STREAM: Spatio-TempoRal Evaluation and Analysis Metric for Video Generative Models",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 14,
+    "id": "",
+    "url": "https://arxiv.org/html/2411.13503v1",
+    "title": "VBench++: Comprehensive and Versatile Benchmark Suite for Video Generative Models",
+    "date": "",
+    "source": "web"
+  }
+]

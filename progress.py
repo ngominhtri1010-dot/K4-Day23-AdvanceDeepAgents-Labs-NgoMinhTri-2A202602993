@@ -37,6 +37,7 @@ class ProgressStore:
         self.path = Path(root) / f'{digest}.json'
         self.previous = {}
         self.restored = []
+        self.restored_artifacts = {}
         self._lock = threading.RLock()
         self.active = True
         self.fresh = fresh
@@ -68,6 +69,7 @@ class ProgressStore:
                 raise RuntimeError('could not restore all progress files into sandbox')
         self.previous = stats
         self.restored = sorted(artifacts)
+        self.restored_artifacts = dict(artifacts)
         return self.restored
 
     def _check_secrets(self, text):

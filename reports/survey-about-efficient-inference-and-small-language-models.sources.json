@@ -1,0 +1,114 @@
+[
+  {
+    "n": 1,
+    "id": "",
+    "url": "https://arxiv.org/html/2605.01111",
+    "title": "When Less is Enough: Efficient Inference via Collaborative Reasoning",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 2,
+    "id": "2411.05903",
+    "url": "https://huggingface.co/papers/2411.05903",
+    "title": "Towards Multi-Modal Mastery: A 4.5B Parameter Truly Multi-Modal Small Language Model",
+    "date": "2024-11-08",
+    "source": "hf-search"
+  },
+  {
+    "n": 3,
+    "id": "2608.28846",
+    "url": "https://arxiv.org/abs/2608.28846",
+    "title": "A rigor-matched audit of periodic-step layer skipping for efficient llm inference: conflayers versus swift, with a supplemental analysis of trained routing alternatives",
+    "date": "2026-08-28",
+    "source": "arxiv"
+  },
+  {
+    "n": 4,
+    "id": "",
+    "url": "http://arxiv.org/abs/1910.01108",
+    "title": "DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter",
+    "date": "2020-03-01",
+    "source": "web"
+  },
+  {
+    "n": 5,
+    "id": "1910.01108",
+    "url": "https://huggingface.co/papers/1910.01108",
+    "title": "DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter",
+    "date": "2019-10-02",
+    "source": "hf-search"
+  },
+  {
+    "n": 6,
+    "id": "2211.07715",
+    "url": "https://huggingface.co/papers/2211.07715",
+    "title": "Fast DistilBERT on CPUs",
+    "date": "2022-10-27",
+    "source": "hf-search"
+  },
+  {
+    "n": 7,
+    "id": "2404.14294",
+    "url": "https://huggingface.co/papers/2404.14294",
+    "title": "A Survey on Efficient Inference for Large Language Models",
+    "date": "2024-04-22",
+    "source": "hf-search"
+  },
+  {
+    "n": 8,
+    "id": "",
+    "url": "https://github.com/huggingface/transformers-research-projects/blob/main/distillation/README.md",
+    "title": "distillation/README.md",
+    "date": "",
+    "source": "web"
+  },
+  {
+    "n": 9,
+    "id": "2506.13404",
+    "url": "https://huggingface.co/papers/2506.13404",
+    "title": "A Technical Study into Small Reasoning Language Models",
+    "date": "2025-06-16",
+    "source": "hf-search"
+  },
+  {
+    "n": 10,
+    "id": "",
+    "url": "https://arxiv.org/abs/2606.01806",
+    "title": "[2606.01806] ProbeScale: Probing Analysis to Optimize Neural Scaling Laws for Efficient Small Language Model Inference",
+    "date": "2026-06-01",
+    "source": "web"
+  },
+  {
+    "n": 11,
+    "id": "2601.22588",
+    "url": "https://huggingface.co/papers/2601.22588",
+    "title": "Rethinking LLM-as-a-Judge: Representation-as-a-Judge with Small Language Models via Semantic Capacity Asymmetry",
+    "date": "2026-01-30",
+    "source": "hf-search"
+  },
+  {
+    "n": 12,
+    "id": "2602.01870",
+    "url": "https://huggingface.co/papers/2602.01870",
+    "title": "BTGenBot-2: Efficient Behavior Tree Generation with Small Language Models",
+    "date": "2026-02-02",
+    "source": "hf-search"
+  },
+  {
+    "n": 13,
+    "id": "",
+    "url": "https://proceedings.mlr.press/v267/bian25b.html",
+    "title": "Scaling Inference-Efficient Language Models",
+    "date": "2025-10-06",
+    "source": "web"
+  },
+  {
+    "n": 14,
+    "id": "",
+    "url": "https://www.esann.org/sites/default/files/proceedings/2026/ES2026-274.pdf",
+    "title": "Task-Specific Efficiency Analysis: When Small Language Models Outperform Large Language",
+    "date": "",
+    "source": "web"
+  }
+]

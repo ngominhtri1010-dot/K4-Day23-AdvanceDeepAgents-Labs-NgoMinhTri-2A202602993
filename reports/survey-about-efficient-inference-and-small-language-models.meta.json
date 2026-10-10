@@ -1,0 +1,71 @@
+{
+  "topic": "survey about efficient inference and small language models",
+  "model": "lab-qwen3",
+  "elapsed_s": 406.6,
+  "subagent_calls": 4,
+  "tool_calls": {
+    "prepare_sources": 1,
+    "write_report_section": 17,
+    "task": 4,
+    "write_todos": 1,
+    "plan_research": 1,
+    "execute": 1
+  },
+  "tokens": {
+    "output": 2399,
+    "input": 23781
+  },
+  "model_requests_attempted": 23,
+  "n_sources": 14,
+  "source_families": [
+    "arxiv",
+    "hf-search",
+    "web"
+  ],
+  "execution_mode": "guided",
+  "phase_control": "deterministic; model plans, analyses, writes and checks",
+  "recorded_agent_tokens": {
+    "input": 21713,
+    "output": 3430
+  },
+  "executed_tool_calls": {
+    "plan_research": 1,
+    "write_todos": 1,
+    "task": 4,
+    "hf_search_papers": 3,
+    "arxiv_search": 5,
+    "web_search": 3,
+    "web_fetch": 6,
+    "prepare_sources": 1,
+    "write_report_section": 6,
+    "execute": 1
+  },
+  "citation_audit": {
+    "checks": [
+      {
+        "n": 1,
+        "status": "SUPPORTED",
+        "quote_id": 7,
+        "reason": "The claim is directly supported by the abstract, which states that DUET is a collaborative inference framework where a capable model and a lightweight model work together, with the capable model handling reasoning-intensive computation and the lightweight model handling non–reasoning-intensive components.",
+        "evidence": "In this work, we introduce DUET (Dual-model Efficient Two-stage inference), a collaborative inference framework in which a capable model and a lightweight model work together to solve a task.",
+        "url": "https://arxiv.org/html/2605.01111"
+      },
+      {
+        "n": 2,
+        "status": "SUPPORTED",
+        "quote_id": 8,
+        "reason": "The claim is directly supported by the abstract, which states that a 4.5B parameter small language model handles multiple modalities and achieves state-of-the-art performance in multi-modal tasks.",
+        "evidence": "A 4.5B parameter small language model handles multiple modalities and achieves state-of-the-art performance in multi-modal tasks.",
+        "url": "https://huggingface.co/papers/2411.05903"
+      },
+      {
+        "n": 3,
+        "status": "SUPPORTED",
+        "quote_id": 14,
+        "reason": "The claim is directly supported by the abstract, which states that layer-skipping methods for efficient LLM inference decide, at some granularity, which transformer layers to execute for a given input.",
+        "evidence": "> Layer-skipping methods for efficient LLM inference decide, at some granularity, which transformer layers to execute for a given input.",
+        "url": "https://arxiv.org/abs/2608.28846"
+      }
+    ]
+  }
+}

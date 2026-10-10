@@ -1,0 +1,68 @@
+{
+  "topic": "survey about reinforcement learning for LLM reasoning",
+  "model": "lab-qwen3",
+  "elapsed_s": 316.6,
+  "subagent_calls": 5,
+  "tool_calls": {
+    "write_todos": 1,
+    "plan_research": 1,
+    "prepare_sources": 1,
+    "write_report_section": 7,
+    "execute": 2,
+    "task": 5
+  },
+  "tokens": {
+    "input": 11634,
+    "output": 1243
+  },
+  "model_requests_attempted": 13,
+  "n_sources": 18,
+  "source_families": [
+    "arxiv",
+    "hf-search",
+    "web"
+  ],
+  "execution_mode": "guided",
+  "phase_control": "deterministic; model plans, analyses, writes and checks",
+  "recorded_agent_tokens": {
+    "input": 22098,
+    "output": 2171
+  },
+  "executed_tool_calls": {
+    "plan_research": 1,
+    "write_todos": 1,
+    "task": 5,
+    "hf_search_papers": 4,
+    "arxiv_search": 4,
+    "web_search": 3,
+    "web_fetch": 9,
+    "prepare_sources": 1,
+    "write_report_section": 7,
+    "execute": 2
+  },
+  "citation_audit": {
+    "checks": [
+      {
+        "n": 1,
+        "status": "SUPPORTED",
+        "evidence": "Reinforcement learning with verifiable rewards (RLVR) has improved the reasoning capabilities of large language models (LLMs),",
+        "reason": "The claim is directly supported by the text.",
+        "url": "https://arxiv.org/abs/2609.40360"
+      },
+      {
+        "n": 2,
+        "status": "SUPPORTED",
+        "evidence": "The paper proposes a Reinforcement Learning from Logical Feedback (RLLF) approach to enhance logical reasoning in Large Language Models (LLMs) for application in law and other logic-intensive fields.",
+        "reason": "The claim is directly supported by the text.",
+        "url": "https://huggingface.co/papers/2311.13095"
+      },
+      {
+        "n": 3,
+        "status": "SUPPORTED",
+        "evidence": "Inspired by the success of DeepSeek-R1, we explore the potential of rule-based reinforcement learning (RL) in large reasoning models.",
+        "reason": "The claim is directly supported by the text.",
+        "url": "https://arxiv.org/abs/2502.14768"
+      }
+    ]
+  }
+}

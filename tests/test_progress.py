@@ -117,7 +117,7 @@ class ProgressTests(unittest.TestCase):
         first_message = AIMessage(content='', tool_calls=[
             {'name': 'task', 'args': {}, 'id': str(i)} for i in range(3)])
 
-        def build(backend, model, budget):
+        def build(backend, model, budget, *, resume=False):
             attempt[0] += 1
             current_attempt = attempt[0]
             def stream(inputs, **kwargs):
@@ -128,6 +128,8 @@ class ProgressTests(unittest.TestCase):
                     raise RuntimeError('daily quota exhausted')
                 self.assertEqual(backend.files[notes], b'# Retrieved evidence\n')
                 self.assertIn('Saved-progress files', inputs['messages'][0]['content'])
+                self.assertTrue(resume)
+                self.assertIn('# Retrieved evidence', inputs['messages'][0]['content'])
                 backend.files[research.REPORT_PATH] = report.encode()
                 backend.files[research.SOURCES_PATH] = json.dumps(sources).encode()
                 yield {'messages': [AIMessage(content='Complete')]}

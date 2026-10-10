@@ -1,0 +1,68 @@
+{
+  "topic": "survey about LLM agents and tool use",
+  "model": "lab-qwen3",
+  "elapsed_s": 431.7,
+  "subagent_calls": 7,
+  "tool_calls": {
+    "plan_research": 1,
+    "prepare_sources": 1,
+    "execute": 4,
+    "write_todos": 1,
+    "task": 7,
+    "write_report_section": 10
+  },
+  "tokens": {
+    "input": 15212,
+    "output": 1592
+  },
+  "model_requests_attempted": 18,
+  "n_sources": 17,
+  "source_families": [
+    "arxiv",
+    "hf-search",
+    "web"
+  ],
+  "execution_mode": "guided",
+  "phase_control": "deterministic; model plans, analyses, writes and checks",
+  "recorded_agent_tokens": {
+    "input": 32537,
+    "output": 4607
+  },
+  "executed_tool_calls": {
+    "plan_research": 1,
+    "write_todos": 1,
+    "task": 7,
+    "hf_search_papers": 4,
+    "arxiv_search": 4,
+    "web_search": 3,
+    "web_fetch": 15,
+    "prepare_sources": 1,
+    "write_report_section": 10,
+    "execute": 4
+  },
+  "citation_audit": {
+    "checks": [
+      {
+        "n": 1,
+        "status": "SUPPORTED",
+        "evidence": "Recent work (2024 to 2026) has converged on a strategy for defending tool-using LLM agents against indirect prompt injection: rather than training the model to refuse malicious instructions, enforce security outside the model with a deterministic policy that mediates the agent’s actions.",
+        "reason": "The claim is directly supported by the text of the paper.",
+        "url": "https://arxiv.org/abs/2606.26479"
+      },
+      {
+        "n": 2,
+        "status": "SUPPORTED",
+        "evidence": "A modular taxonomy and debugging framework improve error detection and recovery in large language model agents, enhancing task success.",
+        "reason": "The claim is directly supported by the text of the paper.",
+        "url": "https://huggingface.co/papers/2509.25370"
+      },
+      {
+        "n": 3,
+        "status": "SUPPORTED",
+        "evidence": "As agent systems evolve, however, the central problem has shifted from isolated invocation to multi-tool orchestration over long trajectories with intermediate state, execution feedback, changing environments, and practical constraints such as safety, cost, and verifiability.",
+        "reason": "The claim is directly supported by the text of the paper.",
+        "url": "https://arxiv.org/abs/2603.22862"
+      }
+    ]
+  }
+}
